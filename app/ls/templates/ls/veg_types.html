@@ -1,0 +1,45 @@
+{% extends "ls/base.html" %}
+
+{% load static %}
+{% block title %} Семена овощей {% endblock %}
+
+{% block content %}
+
+<!--<div class="navigation">
+    <ul class="breadcrumb-navigation">
+        <li><a href="/">Главная</a></li>
+    </ul>
+</div>-->
+<div class="page_title"><h1>Семена овощей</h1></div>
+<div class="top_widgets">
+<div id="widget"></div>
+{% for v in veg_list %}
+    <a class="vege_img" href="{% url 'ls:InVegList' v.veg_type %}">
+        <img class="img__cover" decoding="async" src="{% static v.image %}"> 
+        <span class="widget_title">{{v.veg_type}}</span>
+    </a>
+{% endfor %}
+</div>
+<div id="widget"></div>
+<div class="page_title"><h2>Популярное</h2></div>
+<p>Представляем Вам семена наиболее популярных сортов по мнению наших посетителей.</p>
+{% if list_of_likes_sorts %}
+<div class="top_sort_widgets">
+{% for n in list_of_likes_sorts %}
+    {% if n.vids is None %}
+        <a class="sort_img" href="{% url 'ls:SortDetails' n.veg_type n.name%}">
+        <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static n.image%}"> </div>
+        <span class="widget_title_sort">{{n.name}}</span>
+        <div class="widget_details_likes"><img class="logo_likes_img" decoding="async" src="/static/ls/images/like.png"><span class="likes_number">{{n.likes}}</span></div>
+    </a>
+    {% else %}
+    <a class="sort_img" href="{% url 'ls:SortDetails' n.veg_type n.vids n.name%}">
+        <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static n.image%}"> </div>
+        <span class="widget_title_sort">{{n.name}}</span>
+        <div class="widget_details_likes"><img class="logo_likes_img" decoding="async" src="/static/ls/images/like.png"><span class="likes_number">{{n.likes}}</span></div>
+    </a>
+    {% endif %}
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "ls/base.html" %}
+
+{% load static %}
+{% block title %} Сравнение сортов {% endblock %}
+
+{% block content %}
+{% if lists %}
+{% for veg_type in lists %}
+<div class="page_title"><h2>{{veg_type.0.t_id}}</h2></div>
+<div class="comp_veg_type">
+    {% for t in veg_type%}
+        <div class="compare_main {{forloop.counter}}">
+            {% if t.vids %}
+                <a class="compare_main_blocks" href="{% url 'ls:SortDetails' veg_type.0.t_id t.vids t.name%}">
+            {% else %}
+                <a class="compare_main_blocks" href="{% url 'ls:SortDetails' veg_type.0.t_id t.name%}">
+            {% endif %}
+                    <div class="compare_rows comp_sort_title">{{t.name}}</div>
+                    <div class="compare_sort_img_size"><img class="compare_img__cover" decoding="async" src="{% static t.image%}"> </div>
+                    {% if t.vids %}
+                        <div class="compare_rows">{{t.vids}}</div>
+                    {% endif %}
+                    <div class="compare_rows">{{t.time}}</div>
+                    <div class="compare_rows">{{t.grunt_type}}</div>
+                    <div class="compare_rows">{{t.form}}</div>
+                    <div class="compare_rows">{{t.size}}</div>
+                    <div class="compare_rows">{{t.color}}</div>
+                    <div class="compare_rows">{{t.goal}}</div>
+              </a>
+                {% csrf_token %}
+                <input class="compare_input {{forloop.counter}}" type="submit" value="Удалить из сравнения" 
+                onclick="delFromCompare(this.className,'{{veg_type.0.t_id}}','{{t.name}}')">
+       </div> 
+    {% endfor %}
+
+</div>
+<div id="widget"></div>
+{% endfor %}
+{% else %}
+Не выбраны сорта для сравнения!
+{% endif %}
+
+
+<!--{% if veg_list %}
+<div class="top_widgets">
+<div id="widget"></div>
+{% for v in veg_list %}
+    {% if v.vids != '' %}
+    <a class="vege_img" href="{% url 'ls:InVegList' veg_type v.vids %}">
+        <img class="img__cover" decoding="async" src="{% static v.vids_image%}"> 
+        <span class="widget_title">{{v.vids}}</span>
+    </a>
+    {% endif %}
+{% endfor %}
+{% endif %}
+</div>
+{% if sort_list %}
+<div class="top_sort_widgets">
+<div id="widget"></div>
+{% for s in sort_list %}
+    {% if veg_vids %}
+    <a class="sort_img" href="{% url 'ls:SortDetails' veg_type s.vids s.name%}">
+        <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static s.image%}"> </div>
+        <span class="widget_title">{{s.name}}</span>
+        <div class="widget_details"><span class="sort_widget_items">Срок созревания: </span>{{s.time}}</div>
+        <div class="widget_details"><span class="sort_widget_items">Цвет плода: </span>{{s.color}}</div>
+    </a>
+    {% else %}
+    <a class="sort_img" href="{% url 'ls:SortDetails' veg_type s.name%}">
+        <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static s.image%}"> </div>
+        <span class="widget_title">{{s.name}}</span>
+        <div class="widget_details"><span class="sort_widget_items">Срок созревания: </span>{{s.time}}</div>
+        <div class="widget_details"><span class="sort_widget_items">Цвет плода: </span>{{s.color}}</div>
+    </a>
+    {% endif %}
+{% endfor %}
+{% endif %}
+</div>-->
+{% endblock %}

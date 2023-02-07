@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru-RU" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'ls/style.css' %}">
+    <script defer src="{% static 'ls/main.js' %}"></script>
+    <script defer src="{% static 'ls/functions.js' %}"></script>
+    {% block head_extend %}  {% endblock %}
+    <title>{% block title %} Не вставлен блок title! {% endblock %}</title>
+    <meta name="description" content="{% block description %} Не вставлен блок description! {% endblock %}">
+  </head>
+  <body>
+  <div id="root">
+    <main class="layout__root">
+        <div class="header">
+            <div class="header_content">
+                <div class="header_logo">
+                    <a href="{% url 'ls:index'%}"><img class="image_logo" src="/static/ls/images/logo.png"> </a>
+                </div>
+                <div class="contacts_menu_mobile">
+                    <div class="contacts_items">Контакты</div>
+                    <div class="contacts_items"><a href="https://invite.viber.com/?g2=AQAcNXVGR1IGF0xJreNbsqnSTJscJi15rJV1XeLw7t%2BpbkOpj1ERMM2onTLEyNMe"><img class="contacts_logo" src="/static/ls/images/viber.jpg"> </a></div>
+                </div>
+                <div class="header_search">
+                    <form role="search" method="get" id="searchform" class="search_form">
+                        <input type="search" placeholder="Поиск по сайту..." name="s" class="search-form__text" >
+                        <ul class="ajax-search"></ul>
+                    </form>
+                </div>
+                <div class="contacts_menu">
+                    <div class="contacts_items">Контакты</div>
+                    <div class="contacts_items"><a href="https://invite.viber.com/?g2=AQAcNXVGR1IGF0xJreNbsqnSTJscJi15rJV1XeLw7t%2BpbkOpj1ERMM2onTLEyNMe"><img class="contacts_logo" src="/static/ls/images/viber.jpg"> </a></div>
+                </div>
+            </div>
+        </div>
+        <div id="widget"></div>
+        <div class="header_main_menu">
+            <div class="main_menu">
+                <div class="mobile_menu">Меню
+                    <ul class="mobile_menu_ul">
+                        <li class="mobile_menu_li"><a href="/vegetables/">Овощи</a></li>
+                        <li class="mobile_menu_li"><a href="/flowers/">Цветы</a></li>
+                        <li class="mobile_menu_li"><a href="/berry/">Ягоды</a></li>
+                        <li class="mobile_menu_li"><a href="/recomend/">Лучшее</a></li>
+                        <li class="mobile_menu_li"><a href="/contact/">Контакты</a></li>
+                    </ul>
+                </div>
+                <a class="main_menu_items" href="/vegetables/">Овощи</a>
+                <a class="main_menu_items" href="/flowers/">Цветы</a>
+                <a class="main_menu_items" href="/berry/">Ягоды</a>
+                <a class="main_menu_items" href="/recomend/">Лучшее</a>
+                <a class="main_menu_items" href="/contact/">Контакты</a>
+                <a class="main_menu_items item_right" href="/compare/">Перейти к сравнению</a>
+            </div>
+        </div>
+        
+        <div class="layout__content">
+            <div class="content">
+                {% block content %} Не вставлен блок content! {% endblock %}
+            </div>
+        </div>
+        
+        <div id="widget"></div>
+        <div class="footer">
+            <div class="footer_content">
+            </div>
+            <a class="back_to_top" title="Наверх"><img class="image_to_top" src="/static/ls/images/arrow_to_top.png"></a>
+        </div>
+    </main>
+  </div>
+  </body>
+</html>

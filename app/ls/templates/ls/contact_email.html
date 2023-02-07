@@ -1,0 +1,17 @@
+{% extends "ls/base.html" %}
+
+{% load static %}
+{% block title %} Отправка сообщения {% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Оставьте сообщение</h1>
+    <div id="form_container">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="email_button">
+                <button type="submit" class="send_button">Отправить</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

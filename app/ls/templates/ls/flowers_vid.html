@@ -1,0 +1,30 @@
+{% extends "ls/base.html" %}
+
+{% load static %}
+{% block title %} Цветы {{ vid }}{% endblock %}
+
+{% block content %}
+<div class="navigation">
+    <ul class="breadcrumb-navigation">
+        <li><a href="/">Главная</a></li>
+        <li><span>&nbsp;&gt;&nbsp;</span></li>
+        <li><a href="/flowers/">Цветы</a></li>
+    </ul>
+</div>
+
+<div class="page_title"><h1>{{vid}}</h1></div>
+<div class="vids_descr"><p>{{flower_vid_details.0.vid_descr|safe}}</p></div>
+<div class="top_sort_widgets">
+
+    <div id="widget"></div>
+    {% for f in flower_vid_details %}
+            <a class="sort_img" href="{% url 'ls:FlowersSortDetails' f.vids f.name%}">
+                <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static f.image%}"> </div>
+                <span class="widget_title_sort">{{f.name}}</span>
+                <div class="widget_details"><span class="sort_widget_items">Высота: </span>{{f.height}}</div>
+                <div class="widget_details"><span class="sort_widget_items">Цвет: </span>{{f.color}}</div>
+            </a>
+    {% endfor %}
+
+</div>
+{% endblock %}

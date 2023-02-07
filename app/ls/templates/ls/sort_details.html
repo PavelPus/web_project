@@ -1,0 +1,157 @@
+{% extends "ls/base.html" %}
+
+{% load static %}
+{% block title %} {{sort_details.name}} {% endblock %}
+
+{% block content %}
+
+<div class="navigation">
+    <ul class="breadcrumb-navigation">
+        <li><a href="/">Главная</a></li>
+        <li><span>&nbsp;&gt;&nbsp;</span></li>
+        <li><a href="/vegetables/">Овощи</a></li>
+        <li><span>&nbsp;&gt;&nbsp;</span></li>
+        <li><a class="veg_type" href="{% url 'ls:InVegList' veg_type %}">{{veg_type}}</a></li>
+        {% if veg_vids %}
+        <li><span>&nbsp;&gt;&nbsp;</span></li>
+        <li><a href="{% url 'ls:InVegList' veg_type veg_vids %}">{{veg_vids}}</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="page_title"><h1 class="sort_name">{{sort_details.name}}</h1></div>
+
+<div class="sort-main_img"> <img class="main_img" decoding="async" src="{% static sort_details.image%}"> </div>
+<div class="sort-main_table"> 
+    <table>
+        {% if sort_details.name %}
+        <tr>
+            <td class="td0">Название:</td><td class="td1">{{sort_details.name}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.sort %}
+        <tr>
+            <td class="td0">Сортность:</td><td class="td1">{{sort_details.sort}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.vids %}
+        <tr>
+            <td class="td0">Тип:</td><td class="td1">{{sort_details.vids}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.time %}
+        <tr>
+            <td class="td0">Срок созревания:</td><td class="td1">{{sort_details.time}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.grunt_type %}
+        <tr>
+            <td class="td0">Способ выращивания:</td><td class="td1">{{sort_details.grunt_type}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.form %}
+        <tr>
+            <td class="td0">Форма плода:</td><td class="td1">{{sort_details.form}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.size %}
+        <tr>
+            <td class="td0">Размер плода:</td><td class="td1">{{sort_details.size}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.color %}
+        <tr>
+            <td class="td0">Цвет плода:</td><td class="td1">{{sort_details.color}}</td>
+        </tr>
+        {% endif %}
+        {% if sort_details.goal %}
+        <tr>
+            <td class="td0">Назначение:</td><td class="td1">{{sort_details.goal}}</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+<div id="widget"></div>
+<div class="page_title"><h2>Подробное описание</h2></div>
+<p>{{sort_details.description}}</p>
+
+<div class="likes_compare_sort_container">
+    <div class="likes__sort_container">
+        <div class="sort_details_likes"><img class="sort_likes_img" decoding="async" src="/static/ls/images/like.png"><span class="sort_likes_number">{{sort_details.likes}}</span></div>
+        {% csrf_token %}
+        <input class="likes_input {{likes_color}}" type="submit" value="Мне тоже нравится!">
+        <div class="thank_like {{isvis_like}}">Спасибо за Вашу оценку.</div>
+    </div>
+    <div class="compare__sort_container">
+        {% csrf_token %}
+        <input class="compare_input {{сompare_color}}" type="submit" value="Добавить в сравнения">
+        <a class="thank_compare {{isvis_compare}}" href="/compare/">Перейти к сравнению</a>
+    </div>
+</div>
+
+<div id="widget"></div>
+<div class="related_sort_container">
+    <h2>Вам также может быть интересно</h2>
+    {% if sort_related_list %}
+        {% for r in sort_related_list %}
+            {% if r.vids is NULL %}
+            <a class="sort_img" href="{% url 'ls:SortDetails' r.veg_type r.name%}">
+                <div class="related_sort_img_size"><img class="img__cover" decoding="async" src="{% static r.image%}"> </div>
+                <span class="related_widget_title_sort">{{r.name}}</span>
+            </a>
+            {% else %}
+            <a class="sort_img" href="{% url 'ls:SortDetails' r.veg_type r.vids r.name%}">
+                <div class="related_sort_img_size"><img class="img__cover" decoding="async" src="{% static r.image%}"> </div>
+                <span class="related_widget_title_sort">{{r.name}}</span>
+            </a>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
+<div id="widget"></div>
+<div class="form_container">
+    <h2>Комментарии и отзывы</h2>
+    {% if sort_comments %}
+    <h3>Комментариев: {{sort_comments|length}}</h3>
+    <div class="comment_list comments_width">
+    {% for c in sort_comments %}
+        <div class="comment_title">
+            <span class="comment_author">{{c.authorName}}</span>
+            <span class="comment_date">{{c.pub_date}}</span>
+        </div>
+        <div class="comment_message">{{c.comment}}</div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <div class="add_comment_block">
+        <h3>Добавить комментарий</h3>
+            <form method="POST" name="form_send_comment">
+                {% csrf_token %}
+                <p class="comments_form_author">
+                    <label for="from_name">Имя<span class="required">*</span></label>
+                    <input id="from_name" name="from_name" type="text" value="" maxlength="245" required="required">
+                </p>
+                <p class="comments_form_email">
+                    <label for="from_email">Email<span class="required">*</span></label>
+                    <input id="from_email" name="from_email" type="text" value="" maxlength="245" required="required">
+                </p>
+                <div id="widget"></div>
+                <p class="comments_form_comment">
+                    <label for="message">Сообщение<span class="required">*</span></label>
+                    <textarea id="message" name="message" cols="45" rows="8" maxlength="65525" required="required"></textarea>
+                </p>
+                <input type="hidden" name="sort" value="{{sort_details.name}}">
+                <input type="hidden" name="veg_type" value="{{sort_details.veg_type}}">
+                {% if sort_details.vids %}
+                    <input type="hidden" name="veg_vids" value="{{sort_details.veg_vids}}">
+                {% else %}
+                    <input type="hidden" name="veg_vids" value="">
+                {% endif %}
+                <div class="email_button">
+                    <button type="submit" class="send_button" name="send_button">Отправить комментарий</button>
+                </div>
+            </form>
+        </div>
+</div>
+    
+{% endblock %}

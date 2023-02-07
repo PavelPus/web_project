@@ -1,0 +1,65 @@
+{% extends "ls/base.html" %}
+
+{% load static %}
+{% block title %} {{veg_type}} {{veg_vids|lower}} {% endblock %}
+
+{% block content %}
+<div class="navigation">
+    <ul class="breadcrumb-navigation">
+        <li><a href="/">Главная</a></li>
+        <li><span>&nbsp;&gt;&nbsp;</span></li>
+        <li><a href="/vegetables/">Овощи</a></li>
+        {% if veg_vids %}
+        <li><span>&nbsp;&gt;&nbsp;</span></li>
+        <li><a href="{% url 'ls:InVegList' veg_type %}">{{veg_type}}</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% if veg_vids %}
+<div class="page_title"><h1>{{veg_type}} {{veg_vids|lower}}</h1></div>
+{% else %}
+<div class="page_title"><h1>{{veg_type}}</h1></div>
+<div class="vids_descr"><p>{{veg_descr.description|safe}}</p></div>
+{% endif %}
+{% if veg_list %}
+<div class="top_widgets">
+<div id="widget"></div>
+{% for v in veg_list %}
+    {% if v.vids != '' %}
+    <a class="vege_img" href="{% url 'ls:InVegList' veg_type v.vids %}">
+        <img class="img__cover" decoding="async" src="{% static v.vids_image%}"> 
+        <span class="widget_title">{{v.vids}}</span>
+    </a>
+    {% endif %}
+{% endfor %}
+{% endif %}
+</div>
+{% if sort_list %}
+<div class="top_sort_widgets">
+{% regroup sort_list by vids_description as vids_descr %}
+{% for vd in vids_descr %}
+    {% if vd.grouper  %}
+        <div class="vids_descr"><p>{{ vd.grouper }}</p></div>
+    {% endif %}
+    <div id="widget"></div>
+    {% for s in sort_list %}
+        {% if veg_vids %}
+            <a class="sort_img" href="{% url 'ls:SortDetails' veg_type s.vids s.name%}">
+                <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static s.image%}"> </div>
+                <span class="widget_title_sort">{{s.name}}</span>
+                <div class="widget_details"><span class="sort_widget_items">Срок созревания: </span>{{s.time}}</div>
+                <div class="widget_details"><span class="sort_widget_items">Цвет плода: </span>{{s.color}}</div>
+            </a>
+            {% else %}
+            <a class="sort_img" href="{% url 'ls:SortDetails' veg_type s.name%}">
+                <div class="sort_img_size"><img class="img__cover" decoding="async" src="{% static s.image%}"> </div>
+                <span class="widget_title_sort">{{s.name}}</span>
+                <div class="widget_details"><span class="sort_widget_items">Срок созревания: </span>{{s.time}}</div>
+                <div class="widget_details"><span class="sort_widget_items">Цвет плода: </span>{{s.color}}</div>
+            </a>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+{% endif %}
+</div>
+{% endblock %}
